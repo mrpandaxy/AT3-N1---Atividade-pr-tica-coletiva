@@ -1,10 +1,11 @@
-public class SimulacaoHotel {
+package main;
+public class Main {
     public static void main(String[] args) {
         Hotel hotel = new Hotel(10);
 
-        // Cria hóspedes
+        // Cria hospedes
         for (int i = 0; i < 50; i++) {
-            Hospede hospede = new Hospede("Hóspede " + (i + 1), hotel);
+            Hospede hospede = new Hospede("Hospede " + (i + 1), hotel);
             hotel.adicionarAFila(hospede);
         }
 
