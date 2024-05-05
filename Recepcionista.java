@@ -1,4 +1,4 @@
-
+package main;
 class Recepcionista extends Thread {
     private Hotel hotel;
 
