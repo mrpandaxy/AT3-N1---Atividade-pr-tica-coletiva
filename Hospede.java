@@ -1,4 +1,4 @@
-
+package main;
 class Hospede extends Thread {
     private String nome;
     private Hotel hotel;
