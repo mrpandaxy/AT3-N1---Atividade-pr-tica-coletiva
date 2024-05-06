@@ -1,3 +1,4 @@
+
 package main;
 class Camareira extends Thread {
     private Hotel hotel;

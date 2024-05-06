@@ -13,8 +13,8 @@ class Hospede extends Thread {
             Quarto quarto = hotel.checkIn(this);
             System.out.println(nome + " fez check-in no quarto " + quarto.getNumero());
             Thread.sleep(5000); // Simula estadia no quarto
-            hotel.checkOut(quarto);
             System.out.println(nome + " fez check-out do quarto " + quarto.getNumero());
+            hotel.checkOut(quarto);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
