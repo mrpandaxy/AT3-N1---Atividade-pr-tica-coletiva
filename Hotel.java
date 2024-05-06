@@ -41,10 +41,14 @@ class Hotel {
 
     public synchronized void checkOut(Quarto quarto) {
         quarto.limparOcupantes();
-        filaQuartosLimpos.add(quarto);
-        filaChaves.add(quarto);
+        if (!filaQuartosLimpos.offer(quarto)) {
+            System.out.println("A fila de quartos limpos está cheia. O quarto não será adicionado.");
+        } else {
+            filaChaves.add(quarto); // Adiciona a chave do quarto de volta à fila de chaves
+        }
         notifyAll(); // Notifica hospedes e camareiras que um quarto está disponível
     }
+    
 
     public Quarto pegarProximoQuartoLimpo() throws InterruptedException {
         return filaQuartosLimpos.take();
