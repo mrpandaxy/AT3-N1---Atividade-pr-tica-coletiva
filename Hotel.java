@@ -8,7 +8,6 @@ class Hotel {
     private List<Quarto> quartos;
     private BlockingQueue<Hospede> filaHospedes;
     private BlockingQueue<Quarto> filaQuartosLimpos;
-    private BlockingQueue<Quarto> filaChaves;
 
     public Hotel(int quantidadeQuartos) {
         quartos = new ArrayList<>(quantidadeQuartos);
@@ -20,10 +19,6 @@ class Hotel {
         for (Quarto quarto : quartos) {
             filaQuartosLimpos.add(quarto);
         }
-        filaChaves = new ArrayBlockingQueue<>(quantidadeQuartos);
-        for (Quarto quarto : quartos) {
-            filaChaves.add(quarto);
-        }
     }
 
     public synchronized Quarto checkIn(Hospede hospede) throws InterruptedException {
@@ -31,7 +26,6 @@ class Hotel {
             for (Quarto quarto : quartos) {
                 if (quarto.isVago()) {
                     quarto.setOcupante(hospede);
-                    filaChaves.remove(quarto);
                     return quarto;
                 }
             }
@@ -41,25 +35,16 @@ class Hotel {
 
     public synchronized void checkOut(Quarto quarto) {
         quarto.limparOcupantes();
-        if (!filaQuartosLimpos.offer(quarto)) {
-            System.out.println("A fila de quartos limpos está cheia. O quarto não será adicionado.");
-        } else {
-            filaChaves.add(quarto); // Adiciona a chave do quarto de volta à fila de chaves
-        }
-        notifyAll(); // Notifica hospedes e camareiras que um quarto está disponível
+        filaQuartosLimpos.add(quarto);
+        notifyAll(); // Notifica hóspedes e camareiras que um quarto está disponível
     }
-    
 
     public Quarto pegarProximoQuartoLimpo() throws InterruptedException {
         return filaQuartosLimpos.take();
     }
 
-    public Quarto pegarProximaChave() throws InterruptedException {
-        return filaChaves.take();
-    }
-
-    public void adicionarAFila(Hospede hospede) {
-        filaHospedes.add(hospede);
+    public void adicionarAFila(Hospede hóspede) {
+        filaHospedes.add(hóspede);
     }
 
     public Hospede pegarProximoDaFila() throws InterruptedException {
